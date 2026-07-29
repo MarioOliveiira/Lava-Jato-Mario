@@ -1,0 +1,56 @@
+CREATE TABLE apartamento (
+	cod_apartamento SERIAL PRIMARY KEY,
+	numero_apartamento INT NOT NULL,
+	torre_apartamento VARCHAR NOT NULL
+);
+
+CREATE TABLE cliente (
+	cod_cliente SERIAL PRIMARY KEY,
+	nome VARCHAR NOT NULL,
+	sobrenome VARCHAR NOT NULL,
+	email VARCHAR UNIQUE NOT NULL,
+	telefone VARCHAR NOT NULL,
+	cod_apartamento INT UNIQUE NOT NULL,
+	FOREIGN KEY (cod_apartamento) REFERENCES apartamento(cod_apartamento)
+						ON DELETE RESTRICT 
+						ON UPDATE CASCADE
+);
+
+CREATE TABLE carro (
+	cod_carro SERIAL PRIMARY KEY,
+	modelo VARCHAR NOT NULL,
+	marca VARCHAR NOT NULL,
+	cod_cliente INT NOT NULL,
+	FOREIGN KEY (cod_cliente) REFERENCES cliente (cod_cliente)
+					ON DELETE RESTRICT 
+					ON UPDATE CASCADE
+);
+
+CREATE TABLE pedido (
+	cod_pedido SERIAL PRIMARY KEY,
+	dia_lavagem DATE NOT NULL,
+	tipo_lavagem VARCHAR NOT NULL,
+	observacao VARCHAR NOT NULL,
+	status_pedido VARCHAR NOT NULL DEFAULT 'Pendente',
+	valor_servico NUMERIC NOT NULL,
+	cod_cliente INT NOT NULL,
+	cod_carro INT NOT NULL,
+	FOREIGN KEY (cod_cliente) REFERENCES cliente (cod_cliente),
+	FOREIGN KEY (cod_carro) REFERENCES carro (cod_carro)
+);
+ 
+ALTER TABLE pedido ADD CONSTRAINT checar_status_valido 
+  CHECK (status_pedido IN ('pendente', 'agendado', 'lavado', 'cancelado', 'sem_chave', 'nao_conseguiu'));
+
+ALTER TABLE pedido ADD CONSTRAINT checar_valor_positivo CHECK (valor_servico > 0);
+
+
+ALTER TABLE pedido DROP CONSTRAINT pedido_cod_cliente_fkey;
+ALTER TABLE pedido ADD CONSTRAINT pedido_cod_cliente_fkey
+  FOREIGN KEY (cod_cliente) REFERENCES cliente(cod_cliente)
+  ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE pedido DROP CONSTRAINT pedido_cod_carro_fkey;
+ALTER TABLE pedido ADD CONSTRAINT pedido_cod_carro_fkey
+  FOREIGN KEY (cod_carro) REFERENCES carro(cod_carro)
+  ON DELETE RESTRICT ON UPDATE CASCADE;
