@@ -54,3 +54,8 @@ ALTER TABLE pedido DROP CONSTRAINT pedido_cod_carro_fkey;
 ALTER TABLE pedido ADD CONSTRAINT pedido_cod_carro_fkey
   FOREIGN KEY (cod_carro) REFERENCES carro(cod_carro)
   ON DELETE RESTRICT ON UPDATE CASCADE;
+
+
+ALTER TABLE carro ALTER COLUMN cor SET NOT NULL;
+
+select * from carro
