@@ -1,11 +1,10 @@
 package com.lavajato_mario.lavajato_mario.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Cliente {
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer codCliente;
     private String nome;

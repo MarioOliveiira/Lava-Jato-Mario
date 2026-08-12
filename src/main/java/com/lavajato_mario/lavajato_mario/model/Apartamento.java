@@ -2,11 +2,12 @@ package com.lavajato_mario.lavajato_mario.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Apartamento {
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Id
     private Integer codApartamento;
     private Integer numeroApartamento;

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Carro {
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Id
     private Integer codCarro;
     private String modelo;
